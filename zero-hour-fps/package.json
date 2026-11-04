@@ -1,0 +1,16 @@
+{
+  "name": "zero-hour-fps",
+  "version": "1.2.0",
+  "description": "Zero Hour v1.2 - multiplayer FPS browser game (Node.js, Express, Socket.IO, Three.js)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20 <25"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  }
+}

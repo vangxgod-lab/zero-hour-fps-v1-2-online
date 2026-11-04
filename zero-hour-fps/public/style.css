@@ -1,0 +1,93 @@
+:root{--bg:#0a1117;--panel:#111c26;--line:#16293a;--acc:#2ee6c5;--warn:#ff5a36;--txt:#d6e4ee}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--bg);color:var(--txt);font:500 18px Rajdhani,'Segoe UI',sans-serif;overflow:hidden;
+  user-select:none;-webkit-user-select:none;touch-action:none}
+canvas{display:block;position:fixed;inset:0}
+.hidden{display:none!important}
+
+.screen{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;padding:16px;text-align:center;overflow:auto;
+  background:repeating-linear-gradient(0deg,transparent 0 39px,var(--line) 39px 40px),
+    repeating-linear-gradient(90deg,transparent 0 39px,var(--line) 39px 40px),var(--bg)}
+.screen.pause{background:rgba(10,17,23,.9)}
+h1{font:700 clamp(52px,12vw,120px)/.95 Rajdhani,sans-serif;letter-spacing:.1em;color:#fff;text-shadow:0 0 36px rgba(46,230,197,.4)}
+h2{font:700 44px Rajdhani,sans-serif;letter-spacing:.08em;color:var(--acc)}
+.tag{color:var(--acc);margin-bottom:10px}
+.help{max-width:460px;font-size:15px;line-height:1.4;opacity:.75}
+
+button,input[type=text],select{font:700 20px Rajdhani,sans-serif;width:290px;padding:12px 18px;color:#fff;background:var(--panel);
+  border:0;border-left:4px solid var(--acc);
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
+input[type=text]{font-weight:500;text-align:center}
+button{cursor:pointer;letter-spacing:.08em;text-transform:uppercase}
+button:hover,button:focus-visible{background:var(--acc);color:#04100d;outline:none}
+button.main{background:var(--acc);color:#04100d;font-size:26px}
+button.main:hover{background:#fff}
+label{display:flex;flex-direction:column;gap:6px;width:290px;text-align:left}
+label.row{flex-direction:row;align-items:center;gap:10px}
+input[type=range]{width:100%;accent-color:var(--acc)}
+input[type=checkbox]{width:22px;height:22px;accent-color:var(--acc)}
+select{width:100%}
+
+#hud{position:fixed;inset:0;pointer-events:none;z-index:5;text-shadow:0 1px 4px #000}
+/* Crosshair dinamis: celah --g diatur dari JS sesuai sebaran peluru senjata */
+#cross{position:absolute;left:50%;top:50%;width:0;height:0;--g:6px;opacity:.9}
+#cross i{position:absolute;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.7)}
+#cross .u{left:-1px;top:calc(-1 * (var(--g) + 9px));width:2px;height:9px}
+#cross .d{left:-1px;top:var(--g);width:2px;height:9px}
+#cross .l{top:-1px;left:calc(-1 * (var(--g) + 9px));width:9px;height:2px}
+#cross .r{top:-1px;left:var(--g);width:9px;height:2px}
+#cross.off{display:none}
+#hm{position:absolute;left:50%;top:50%;width:28px;height:28px;margin:-14px;border:3px solid #fff;transform:rotate(45deg);opacity:0;transition:opacity .15s}
+#hm.on{opacity:1}#hm.head{border-color:var(--warn)}
+#hm.kill{width:42px;height:42px;margin:-21px;border-color:#ff2a2a;border-width:4px}
+/* Scope sniper */
+#scope{position:absolute;inset:0;
+  background:linear-gradient(#000,#000) center/1px 66vmin no-repeat,linear-gradient(#000,#000) center/66vmin 1px no-repeat,
+    radial-gradient(circle at 50% 50%,transparent 0 32.8vmin,#000 33.4vmin)}
+#scope::after{content:"";position:absolute;left:50%;top:50%;width:5px;height:5px;margin:-2.5px;border-radius:50%;background:var(--warn)}
+#flash{position:absolute;inset:0;box-shadow:inset 0 0 180px var(--warn);opacity:0;transition:opacity .4s}
+#info{position:absolute;top:12px;left:14px;font-weight:700;letter-spacing:.04em}
+#fps{margin-left:12px;opacity:.7}
+#feed{position:absolute;top:12px;right:70px;text-align:right;font-size:16px}
+#feed div{background:rgba(10,17,23,.7);padding:3px 10px;margin-bottom:4px;border-right:3px solid var(--warn)}
+#bars{position:absolute;left:20px;bottom:20px;width:270px}
+#hpbar{height:14px;background:rgba(10,17,23,.7);border:2px solid var(--acc)}
+#hp{display:block;height:100%;width:100%;background:var(--acc);transition:width .15s}
+#wname{margin-top:4px;color:var(--acc);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:16px}
+#ammo{font:700 46px/1 Rajdhani,sans-serif;margin-top:2px;color:#fff}
+#ammo.low{color:var(--warn)}
+/* Daftar senjata (PC: kanan bawah, HP: kiri atas, bisa diketuk) */
+#wbar{position:absolute;right:16px;bottom:20px;display:flex;flex-direction:column;gap:3px;width:150px}
+.ws{display:flex;gap:8px;align-items:center;padding:2px 8px;background:rgba(10,17,23,.55);border-left:3px solid transparent;opacity:.6;font-size:15px;letter-spacing:.04em}
+.ws b{color:var(--acc);width:12px}
+.ws.on{opacity:1;background:rgba(46,230,197,.25);border-left-color:var(--acc)}
+#dead{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
+  font:700 54px Rajdhani,sans-serif;color:var(--warn);background:rgba(40,0,0,.5)}
+#sb{position:absolute;left:50%;top:18%;transform:translateX(-50%);min-width:340px;background:rgba(10,17,23,.94);border:2px solid var(--acc);border-collapse:collapse}
+#sb td,#sb th{padding:6px 16px;text-align:left}#sb th{color:var(--acc)}#sb tr.me td{color:#fff;font-weight:700}
+
+#touch{display:none}
+body.touch #touch{display:block}
+#look{position:fixed;top:0;right:0;width:60%;height:100%;z-index:4}
+#joy{position:fixed;left:max(28px,env(safe-area-inset-left));bottom:28px;width:140px;height:140px;border-radius:50%;z-index:7;
+  border:2px solid var(--acc);background:rgba(46,230,197,.08)}
+#knob{position:absolute;left:50%;top:50%;width:60px;height:60px;margin:-30px;border-radius:50%;background:rgba(46,230,197,.45)}
+.tb{position:fixed;z-index:7;border-radius:50%;border:2px solid var(--acc);background:rgba(10,17,23,.6);color:#fff;
+  font:700 16px Rajdhani,sans-serif;display:flex;align-items:center;justify-content:center}
+#bFire{right:30px;bottom:36px;width:96px;height:96px;border-color:var(--warn);background:rgba(255,90,54,.35)}
+#bJump{right:146px;bottom:28px;width:64px;height:64px}
+#bReload{right:44px;bottom:152px;width:56px;height:56px}
+#bPause{right:12px;top:12px;width:44px;height:44px}
+#bSwap{right:140px;bottom:112px;width:52px;height:52px;font-size:13px}
+#bScope{right:216px;bottom:100px;width:56px;height:56px;font-size:13px}
+#bView{right:76px;top:12px;width:44px;height:44px;font-size:12px}
+body.touch #bars{left:50%;transform:translateX(-50%);width:210px;bottom:10px;text-align:center}
+body.touch #ammo{font-size:34px}
+body.touch #wname{font-size:13px;margin-top:0}
+body.touch #wbar{top:42px;left:14px;right:auto;bottom:auto;flex-direction:row;width:auto;gap:2px}
+body.touch .ws{padding:6px 9px;pointer-events:auto}
+body.touch .ws span{display:none}
+body.touch .ws.on span{display:inline}
+@media (max-height:480px){h1{font-size:48px}.screen{gap:8px}.help{display:none}}

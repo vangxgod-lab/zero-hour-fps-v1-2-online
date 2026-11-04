@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Zero Hour – FPS Multiplayer</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="menu" class="screen">
+  <h1>ZERO HOUR</h1>
+  <p class="tag">Tactical shooter multiplayer untuk PC dan HP – 8 senjata</p>
+  <input type="text" id="name" maxlength="12" placeholder="Nama pemain" aria-label="Nama pemain">
+  <input type="text" id="room" maxlength="16" placeholder="Kode kamar (contoh: ARENA)" aria-label="Kode kamar">
+  <button id="play" class="main">Play Game</button>
+  <button id="bSet1">Settings</button>
+  <button id="bCred">Credits</button>
+  <p class="help">PC: WASD gerak, Spasi lompat, Shift lari, klik kiri tembak, klik kanan zoom, R isi ulang, Tab skor.<br>Senjata: tombol 1–8 atau scroll mouse untuk ganti, Q untuk senjata sebelumnya. V = lihat karakter (kamera orang ketiga).<br>HP: joystick kiri untuk bergerak, geser layar kanan untuk membidik, ketuk nomor senjata di atas untuk ganti.<br>Bagikan kode kamar agar teman bisa masuk ke arena yang sama (maks. 8 pemain).</p>
+</div>
+
+<div id="settings" class="screen hidden">
+  <h2>Settings</h2>
+  <label>Sensitivitas: <output id="o_sens"></output><input type="range" id="sens" min="0.2" max="3" step="0.1"></label>
+  <label class="row"><input type="checkbox" id="sound"> Suara aktif</label>
+  <label>Volume: <output id="o_vol"></output><input type="range" id="vol" min="0" max="100" step="5"></label>
+  <label>Kualitas grafis
+    <select id="gfx"><option value="low">Low (hemat baterai)</option><option value="high">High</option></select>
+  </label>
+  <button id="back">Kembali</button>
+</div>
+
+<div id="credits" class="screen hidden">
+  <h2>Credits</h2>
+  <p class="help">Zero Hour dibuat dengan Three.js (rendering 3D), Socket.IO (jaringan real-time), Node.js dan Express (server).<br>Desain, kode, model senjata, dan suara efek dihasilkan langsung di browser tanpa aset eksternal.</p>
+  <button id="bCredBack">Kembali</button>
+</div>
+
+<div id="pause" class="screen pause hidden">
+  <h2>Jeda</h2>
+  <button id="resume" class="main">Lanjutkan</button>
+  <button id="bSet2">Settings</button>
+  <button id="quit">Keluar ke menu</button>
+</div>
+
+<div id="hud" class="hidden">
+  <div id="scope" class="hidden"></div>
+  <div id="cross"><i class="u"></i><i class="d"></i><i class="l"></i><i class="r"></i></div><div id="hm"></div><div id="flash"></div>
+  <div id="info">Kamar <b id="rm">-</b> &nbsp; Skor <b id="k">0</b> &nbsp; Mati <b id="d">0</b><span id="fps"></span></div>
+  <div id="feed"></div>
+  <div id="wbar"></div>
+  <div id="bars"><div id="hpbar"><i id="hp"></i></div><div id="wname">Assault Rifle</div><div id="ammo">30 / 30</div></div>
+  <div id="dead" class="hidden"><div>Kamu terbunuh<br><small>Respawn sebentar lagi</small></div></div>
+  <table id="sb" class="hidden"></table>
+</div>
+
+<div id="touch">
+  <div id="look"></div>
+  <div id="joy"><div id="knob"></div></div>
+  <div id="bFire" class="tb">FIRE</div>
+  <div id="bJump" class="tb">JUMP</div>
+  <div id="bReload" class="tb">R</div>
+  <div id="bSwap" class="tb">SWAP</div>
+  <div id="bScope" class="tb">ZOOM</div>
+  <div id="bView" class="tb">CAM</div>
+  <div id="bPause" class="tb">II</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="weapons.js"></script>
+<script src="avatar.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
